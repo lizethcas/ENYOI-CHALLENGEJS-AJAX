@@ -18,19 +18,23 @@ const users = [
 $(function () {
   $("form").submit(function (e) {
     e.preventDefault();
-
+    //GUARDAR EN UN OBJETO LOS DATOS INGRESADOS
     let user = {
       email: $("input[type='email']").val(),
       password: $("input[type='password']").val(),
     };
+    //EVALUAR QUE TODOS LOS CAMPOS TENGAN INFORMACIÓN
     if (user.email.length != 0 && user.password.length != 0) {
       let existUser = users.find(
         (m) => m.email === $("input[type='email']").val().toLowerCase()
-      );
+      ); //ENCONTRAR EL CORREO EN EL ARRAY DE OBJETOS USERS
 
+      //EVALUAR QUE EL CORREO INGRESADO EXISTA
       if (existUser != undefined) {
+        //EVALUAR QUE LA CONTRASEÑA INGRESADA CORRESPONDA A LA CONTRASEÑA CONTENIDA EN EL ARRAY DE OBJETOS USERS
         if (existUser.password === user.password) {
-          console.log('exitoso')
+          console.log("exitoso");
+          //TRAER EL HTML DEL ARCHIVO BIENVENIDO Y MOSTRARLO EN PANTALLA
           $.ajax({
             url: "bienvenido.html",
             type: "get",
@@ -45,28 +49,32 @@ $(function () {
             },
           });
         }
+        //EVALUAR QUE LA CONTRASEÑA SEA VALIDA
         if (existUser.password !== user.password) {
-          const markup = `<div class="error">Usuario y/o Contraseña no 
-          concuerdan.</div>`;
-          $(".container").append(markup);
-
-          $(".error").hide(3000);
+          const error = "Usuario y/o Contraseña no concuerdan.";
+          Error(error);
         }
       }
 
+      //EVALUAR LA EXISTENCIA DEL CORREO INGRESADO EN EL FORMULARIO
       if (existUser === undefined) {
-        const markup = `<div class="error">El Usuario no existe</div>`;
-        $(".container").append(markup);
-
-        $(".error").hide(3000);
+        const error = "El Usuario no existe";
+        Error(error);
       }
+      //EVALUAR QUE TODOS LOS CAMPOS ESTEN LLENOS
     } else {
-      const markup = `<div class="error">Todos los campos son obligatorios</div>`;
-      $(".container").append(markup);
-
-      $(".error").hide(3000);
+      const error = "Todos los campos son obligatorios";
+      Error(error);
     }
-
+    //BORRAR DATOS DEL FORMULARIO UNA VEZ SON ENVIADOS
     $(this).find("input").val("");
   });
+  //MOSTRAR MENSAJE DE ERROR SEGUN LA CONDICION
+  function Error(error) {
+    console.log(error);
+    const markup = `<div class="error">${error}</div>`;
+    $(".container").append(markup); //MOSTRAR EL ERROR EN PANTALLA
+
+    $(".error").hide(3000); //MOSTRAR POR 3 SEGUNDOS EL MENSAJE DE ERROR
+  }
 });
