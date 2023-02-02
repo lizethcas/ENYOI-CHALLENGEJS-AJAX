@@ -38,8 +38,7 @@ $(function () {
           $.ajax({
             url: "bienvenido.html",
             type: "get",
-            succes: function (resp) {
-              console.log(resp);
+            success: function (resp) {
               $(".container").html(resp);
               $(".sp").text(existUser.name);
             },
@@ -71,7 +70,6 @@ $(function () {
   });
   //MOSTRAR MENSAJE DE ERROR SEGUN LA CONDICION
   function Error(error) {
-    console.log(error);
     const markup = `<div class="error">${error}</div>`;
     $(".container").append(markup); //MOSTRAR EL ERROR EN PANTALLA
 
